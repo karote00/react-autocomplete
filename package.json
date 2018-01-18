@@ -1,0 +1,24 @@
+{
+  "name": "autocomplete",
+  "version": "1.0.0",
+  "description": "React AutoComplete Field",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karote00/react-autocomplete.git"
+  },
+  "keywords": [
+    "React",
+    "Auto",
+    "Complete"
+  ],
+  "author": "Asa Tsai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/karote00/react-autocomplete/issues"
+  },
+  "homepage": "https://github.com/karote00/react-autocomplete#readme"
+}

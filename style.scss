@@ -1,0 +1,36 @@
+.autocomplete-field {
+  position: relative;
+
+  .autocomplete-list {
+    position: absolute;
+    top: 34px;
+    width: 100%;
+    background: white;
+    overflow: auto;
+    height: 0;
+    z-index: 9;
+
+    &.show {
+      border: 1px solid #d2d6de;
+      border-top: none;
+      height: unset;
+      max-height: 214px;
+    }
+
+    > div {
+      padding: 6px 12px;
+      background: white;
+      border-bottom: 1px solid #d2d6de;
+      cursor: pointer;
+      outline: none;
+
+      &:hover {
+        background: rgba(0, 0, 0, .1);
+      }
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}

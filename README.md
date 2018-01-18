@@ -1,5 +1,5 @@
-# react-autocomplete
-React AutoComplete Field
+# react-dropdown-autocomplete
+React AutoComplete Field link Dropdown
 
 # Params
 - className

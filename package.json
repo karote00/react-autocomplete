@@ -15,7 +15,10 @@
     "Auto",
     "Complete"
   ],
-  "author": "Asa Tsai",
+  "author": {
+    "name": "Asa Tsai",
+    "email": "karoteglathe@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/karote00/react-autocomplete/issues"

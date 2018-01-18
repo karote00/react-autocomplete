@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
-import './style.scss';
+// import './style.scss';
 
 class AutoCompleteField extends Component {
   constructor(props) {

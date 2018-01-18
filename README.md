@@ -12,6 +12,11 @@
 - placeholder
   - optional
   - the placeholder of the input field
+- data
+  - required
+  - your data list
+  - must be array
+  - default: []
 - filter
   - required
   - the key you want to filter the data list

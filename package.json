@@ -1,5 +1,5 @@
 {
-  "name": "autocomplete",
+  "name": "react-autocomplete",
   "version": "1.0.0",
   "description": "React AutoComplete Field",
   "main": "index.js",

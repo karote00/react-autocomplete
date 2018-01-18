@@ -1,7 +1,6 @@
-# react-dropdown-autocomplete
-React AutoComplete Field link Dropdown
+# React AutoComplete Field link Dropdown
 
-# Params
+## Params
 - className
   - optional
 - id
@@ -20,3 +19,24 @@ React AutoComplete Field link Dropdown
 - onValueChange:
   - optional
   - get value from autocomplete field as params in func
+
+## Example
+```jsx
+class App extends React.Component {
+  render() {
+    const { product } = this.props; // get data where you have, or combine from redux
+    
+    return (
+      <ReactDropDownAutoComplete
+        className="form-control"
+        id="name"
+        name="name"
+        placeholder="Product Name"
+        data={product.list || []}
+        filter="name"
+        onValueChange={value => this.onValueChange('name', value)} // onValueChange is custom definition
+      />
+    );
+  }
+}
+```

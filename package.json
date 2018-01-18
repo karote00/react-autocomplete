@@ -20,5 +20,17 @@
   "bugs": {
     "url": "https://github.com/karote00/react-autocomplete/issues"
   },
+  "dependencies": {
+    "react": "^15.5.4",
+    "webpack": "^2.6.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.5.1"
+  },
   "homepage": "https://github.com/karote00/react-autocomplete#readme"
 }

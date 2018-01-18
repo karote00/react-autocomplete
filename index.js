@@ -18,12 +18,12 @@ class AutoCompleteField extends Component {
   }
 
   filterList() {
-    const { data, check } = this.props;
+    const { data, filter } = this.props;
     const { value } = this.autocompleteField;
     let list = [];
 
     if (value.trim()) {
-      list = data.filter(d => d[check].toLowerCase().indexOf(value.trim().toLowerCase()) > -1);
+      list = data.filter(d => d[filter].toLowerCase().indexOf(value.trim().toLowerCase()) > -1);
     }
 
     this.setState({
@@ -46,8 +46,8 @@ class AutoCompleteField extends Component {
   }
 
   handleSelectOption(data) {
-    const { onValueChange, check } = this.props;
-    const value = data[check];
+    const { onValueChange, filter } = this.props;
+    const value = data[filter];
 
     this.setState({
       editField: value,
@@ -71,7 +71,7 @@ class AutoCompleteField extends Component {
 
   render() {
     const { list, editField } = this.state;
-    const { className, id, name, placeholder, check } = this.props;
+    const { className, id, name, placeholder, filter } = this.props;
 
     return (
       <div className="autocomplete-field">
@@ -96,7 +96,7 @@ class AutoCompleteField extends Component {
                 tabIndex="-1"
                 key={l.id}
                 onClick={() => this.handleSelectOption(l)}
-              >{l[check]}</div>
+              >{l[filter]}</div>
             ))
           }
         </div>
@@ -110,7 +110,7 @@ AutoCompleteField.defaultProps = {
   id: '',
   name: '',
   placeholder: '',
-  check: 'name',
+  filter: 'name',
   data: [],
   onValueChange: () => {},
 };
@@ -120,7 +120,7 @@ AutoCompleteField.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   placeholder: PropTypes.string,
-  check: PropTypes.string,
+  filter: PropTypes.string,
   data: PropTypes.array,
   onValueChange: PropTypes.func,
 };

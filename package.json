@@ -2,9 +2,11 @@
   "name": "react-dropdown-autocomplete",
   "version": "1.0.1",
   "description": "React AutoComplete Field",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --watch",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

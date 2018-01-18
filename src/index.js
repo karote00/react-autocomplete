@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types'; // eslint-disable-line
-// import './style.scss';
+import PropTypes from 'prop-types'; // eslint-disable-line
+import './style.scss';
 
 class AutoCompleteField extends Component {
   constructor(props) {
@@ -105,24 +105,24 @@ class AutoCompleteField extends Component {
   }
 }
 
-// AutoCompleteField.defaultProps = {
-//   className: '',
-//   id: '',
-//   name: '',
-//   placeholder: '',
-//   filter: 'name',
-//   data: [],
-//   onValueChange: () => {},
-// };
+AutoCompleteField.defaultProps = {
+  className: '',
+  id: '',
+  name: '',
+  placeholder: '',
+  filter: 'name',
+  data: [],
+  onValueChange: () => {},
+};
 
-// AutoCompleteField.propTypes = {
-//   className: PropTypes.string,
-//   id: PropTypes.string,
-//   name: PropTypes.string,
-//   placeholder: PropTypes.string,
-//   filter: PropTypes.string,
-//   data: PropTypes.array,
-//   onValueChange: PropTypes.func,
-// };
+AutoCompleteField.propTypes = {
+  className: PropTypes.string,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
+  filter: PropTypes.string,
+  data: PropTypes.array,
+  onValueChange: PropTypes.func,
+};
 
 export default AutoCompleteField;

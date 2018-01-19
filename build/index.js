@@ -560,10 +560,13 @@ var AutoCompleteField = function (_Component) {
     var _this = _possibleConstructorReturn(this, (AutoCompleteField.__proto__ || Object.getPrototypeOf(AutoCompleteField)).call(this, props));
 
     _this.state = {
+      isOpen: props.open || false,
       list: [],
       editField: ''
     };
 
+    _this.renderMenu = _this.renderMenu.bind(_this);
+    // this.filterList = this.filterList.bind(this);
     _this.handleAutoCompleteChange = _this.handleAutoCompleteChange.bind(_this);
     _this.handleSelectOption = _this.handleSelectOption.bind(_this);
     _this.handleAutoCompleteBlur = _this.handleAutoCompleteBlur.bind(_this);
@@ -572,61 +575,73 @@ var AutoCompleteField = function (_Component) {
   }
 
   _createClass(AutoCompleteField, [{
+    key: 'isOpen',
+    value: function isOpen() {
+      return this.state.isOpen;
+    }
+  }, {
     key: 'filterList',
     value: function filterList() {
       var _props = this.props,
           data = _props.data,
           filter = _props.filter;
-      var value = this.autocompleteField.value;
+
+      var _ref = this.autocompleteField || {},
+          value = _ref.value;
 
       var list = [];
 
-      if (value.trim()) {
+      if (value && value.trim()) {
         list = data.filter(function (d) {
           return d[filter].toLowerCase().indexOf(value.trim().toLowerCase()) > -1;
         });
       }
 
-      this.setState({
-        list: list
-      });
+      return list;
     }
   }, {
     key: 'handleAutoCompleteChange',
     value: function handleAutoCompleteChange(e) {
       var target = e.target;
       var value = target.value;
-      var onValueChange = this.props.onValueChange;
+      var onChange = this.props.onChange;
 
+      var list = this.filterList();
 
-      this.filterList();
+      onChange(value);
 
       this.setState({
+        list: list,
+        isOpen: list.length > 0,
         editField: value
       });
-
-      onValueChange(value);
     }
   }, {
     key: 'handleSelectOption',
     value: function handleSelectOption(data) {
       var _props2 = this.props,
-          onValueChange = _props2.onValueChange,
+          onChange = _props2.onChange,
           filter = _props2.filter;
 
       var value = data[filter];
 
+      onChange(value);
+
       this.setState({
         editField: value,
-        list: []
+        list: [],
+        isOpen: false
       });
-
-      onValueChange(value);
     }
   }, {
     key: 'handleAutoCompleteFocus',
     value: function handleAutoCompleteFocus() {
-      this.filterList();
+      var list = this.filterList();
+
+      this.setState({
+        list: list,
+        isOpen: list.length > 0
+      });
     }
   }, {
     key: 'handleAutoCompleteBlur',
@@ -635,27 +650,46 @@ var AutoCompleteField = function (_Component) {
 
       setTimeout(function () {
         _this2.setState({
-          list: []
+          list: [],
+          isOpen: false
         });
       }, 200);
     }
   }, {
-    key: 'render',
-    value: function render() {
+    key: 'renderMenu',
+    value: function renderMenu() {
       var _this3 = this;
 
+      var renderItem = this.props.renderItem;
+
+
+      var menus = this.filterList().map(function (data) {
+        var item = renderItem(data);
+
+        return _react2.default.cloneElement(item, {
+          key: data.id || data.name,
+          onClick: function onClick() {
+            return _this3.handleSelectOption(data);
+          }
+        });
+      });
+
+      return menus;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this4 = this;
+
       var _state = this.state,
-          list = _state.list,
+          isOpen = _state.isOpen,
           editField = _state.editField;
       var _props3 = this.props,
           className = _props3.className,
           id = _props3.id,
           name = _props3.name,
-          placeholder = _props3.placeholder,
-          filter = _props3.filter,
-          renderItem = _props3.renderItem;
+          placeholder = _props3.placeholder;
 
-      console.warn(renderItem);
 
       return _react2.default.createElement(
         'div',
@@ -672,26 +706,13 @@ var AutoCompleteField = function (_Component) {
           onChange: this.handleAutoCompleteChange,
           value: editField,
           ref: function ref(input) {
-            _this3.autocompleteField = input;
+            _this4.autocompleteField = input;
           }
         }),
         _react2.default.createElement(
           'div',
-          { className: 'autocomplete-list ' + (list.length > 0 ? 'show' : '') },
-          list.map(function (l) {
-            return _react2.default.createElement(
-              'div',
-              {
-                role: 'button',
-                tabIndex: '-1',
-                key: l.id,
-                onClick: function onClick() {
-                  return _this3.handleSelectOption(l);
-                }
-              },
-              l[filter]
-            );
-          })
+          { className: 'autocomplete-list ' + (isOpen ? 'show' : '') },
+          this.renderMenu()
         )
       );
     }
@@ -701,38 +722,40 @@ var AutoCompleteField = function (_Component) {
 }(_react.Component);
 
 AutoCompleteField.defaultProps = {
+  renderItem: function renderItem(item, filter) {
+    return _react2.default.createElement(
+      'div',
+      {
+        role: 'button',
+        tabIndex: '-1',
+        key: item.id,
+        onClick: function onClick() {
+          return undefined.handleSelectOption(item);
+        }
+      },
+      item[filter]
+    );
+  },
   className: '',
   id: '',
   name: '',
   placeholder: '',
   filter: 'name',
   data: [],
-  onValueChange: function onValueChange() {},
-  renderItem: function renderItem(l) {
-    return _react2.default.createElement(
-      'div',
-      {
-        role: 'button',
-        tabIndex: '-1',
-        key: l.id,
-        onClick: function onClick() {
-          return undefined.handleSelectOption(l);
-        }
-      },
-      l[filter]
-    );
-  }
+  open: false,
+  onChange: function onChange() {}
 };
 
 AutoCompleteField.propTypes = {
+  renderItem: _propTypes2.default.func,
   className: _propTypes2.default.string,
   id: _propTypes2.default.string,
   name: _propTypes2.default.string,
+  open: _propTypes2.default.bool,
   placeholder: _propTypes2.default.string,
   filter: _propTypes2.default.string,
   data: _propTypes2.default.array,
-  onValueChange: _propTypes2.default.func,
-  renderItem: _propTypes2.default.func
+  onChange: _propTypes2.default.func
 };
 
 exports.default = AutoCompleteField;

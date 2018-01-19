@@ -7,71 +7,99 @@ class AutoCompleteField extends Component {
     super(props);
 
     this.state = {
+      isOpen: props.open || false,
       list: [],
       editField: '',
     };
 
+    this.renderMenu = this.renderMenu.bind(this);
+    // this.filterList = this.filterList.bind(this);
     this.handleAutoCompleteChange = this.handleAutoCompleteChange.bind(this);
     this.handleSelectOption = this.handleSelectOption.bind(this);
     this.handleAutoCompleteBlur = this.handleAutoCompleteBlur.bind(this);
     this.handleAutoCompleteFocus = this.handleAutoCompleteFocus.bind(this);
   }
 
+  isOpen() {
+    return this.state.isOpen;
+  }
+
   filterList() {
     const { data, filter } = this.props;
-    const { value } = this.autocompleteField;
+    const { value } = this.autocompleteField || {};
     let list = [];
 
-    if (value.trim()) {
+    if (value && value.trim()) {
       list = data.filter(d => d[filter].toLowerCase().indexOf(value.trim().toLowerCase()) > -1);
     }
 
-    this.setState({
-      list,
-    });
+    return list;
   }
 
   handleAutoCompleteChange(e) {
     const { target } = e;
     const { value } = target;
-    const { onValueChange } = this.props;
+    const { onChange } = this.props;
+    const list = this.filterList();
 
-    this.filterList();
+    onChange(value);
 
     this.setState({
+      list,
+      isOpen: list.length > 0,
       editField: value,
     });
-
-    onValueChange(value);
   }
 
   handleSelectOption(data) {
-    const { onValueChange, filter } = this.props;
+    const { onChange, filter } = this.props;
     const value = data[filter];
+
+    onChange(value);
 
     this.setState({
       editField: value,
       list: [],
+      isOpen: false,
     });
-
-    onValueChange(value);
   }
 
   handleAutoCompleteFocus() {
-    this.filterList();
+    const list = this.filterList();
+
+    this.setState({
+      list,
+      isOpen: list.length > 0,
+    });
   }
 
   handleAutoCompleteBlur() {
     setTimeout(() => {
       this.setState({
         list: [],
+        isOpen: false,
       });
     }, 200);
   }
 
+  renderMenu() {
+    const { renderItem } = this.props;
+
+    const menus = this.filterList().map((data) => {
+      const item = renderItem(data);
+
+      return React.cloneElement(item, {
+        key: data.id || data.name,
+        onClick: () => this.handleSelectOption(data),
+      });
+    });
+
+    return menus;
+  }
+
   render() {
-    const { list, editField } = this.state;
-    const { className, id, name, placeholder, filter } = this.props;
+    const { isOpen, editField } = this.state;
+    const { className, id, name, placeholder } = this.props;
 
     return (
       <div className="autocomplete-field">
@@ -88,17 +116,8 @@ class AutoCompleteField extends Component {
           value={editField}
           ref={(input) => { this.autocompleteField = input; }}
         />
-        <div className={`autocomplete-list ${list.length > 0 ? 'show' : ''}`}>
-          {
-            list.map(l => (
-              <div
-                role="button"
-                tabIndex="-1"
-                key={l.id}
-                onClick={() => this.handleSelectOption(l)}
-              >{l[filter]}</div>
-            ))
-          }
+        <div className={`autocomplete-list ${isOpen ? 'show' : ''}`}>
+          {this.renderMenu()}
         </div>
       </div>
     );
@@ -106,23 +125,34 @@ class AutoCompleteField extends Component {
 }
 
 AutoCompleteField.defaultProps = {
+  renderItem: (item, filter) => (
+    <div
+      role="button"
+      tabIndex="-1"
+      key={item.id}
+      onClick={() => this.handleSelectOption(item)}
+    >{item[filter]}</div>
+  ),
   className: '',
   id: '',
   name: '',
   placeholder: '',
   filter: 'name',
   data: [],
-  onValueChange: () => {},
+  open: false,
+  onChange: () => {},
 };
 
 AutoCompleteField.propTypes = {
+  renderItem: PropTypes.func,
   className: PropTypes.string,
   id: PropTypes.string,
   name: PropTypes.string,
+  open: PropTypes.bool,
   placeholder: PropTypes.string,
   filter: PropTypes.string,
   data: PropTypes.array,
-  onValueChange: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 export default AutoCompleteField;

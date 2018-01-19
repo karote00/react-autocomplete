@@ -652,8 +652,10 @@ var AutoCompleteField = function (_Component) {
           id = _props3.id,
           name = _props3.name,
           placeholder = _props3.placeholder,
-          filter = _props3.filter;
+          filter = _props3.filter,
+          renderItem = _props3.renderItem;
 
+      console.warn(renderItem);
 
       return _react2.default.createElement(
         'div',
@@ -705,7 +707,21 @@ AutoCompleteField.defaultProps = {
   placeholder: '',
   filter: 'name',
   data: [],
-  onValueChange: function onValueChange() {}
+  onValueChange: function onValueChange() {},
+  renderItem: function renderItem(l) {
+    return _react2.default.createElement(
+      'div',
+      {
+        role: 'button',
+        tabIndex: '-1',
+        key: l.id,
+        onClick: function onClick() {
+          return undefined.handleSelectOption(l);
+        }
+      },
+      l[filter]
+    );
+  }
 };
 
 AutoCompleteField.propTypes = {
@@ -715,7 +731,8 @@ AutoCompleteField.propTypes = {
   placeholder: _propTypes2.default.string,
   filter: _propTypes2.default.string,
   data: _propTypes2.default.array,
-  onValueChange: _propTypes2.default.func
+  onValueChange: _propTypes2.default.func,
+  renderItem: _propTypes2.default.func
 };
 
 exports.default = AutoCompleteField;

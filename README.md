@@ -4,7 +4,8 @@
 - renderItem
   - optional
   - custom list menu item you want to show
-  - onClick
+
+  - onClick
       - bind menu item onClick method
 - className
   - optional

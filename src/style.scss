@@ -1,6 +1,12 @@
 .autocomplete-field {
   position: relative;
 
+  &.has-icon {
+    input[type="text"] {
+      padding-right: 40px;
+    }
+  }
+
   .autocomplete-list {
     position: absolute;
     top: 34px;
@@ -33,5 +39,18 @@
         border: none;
       }
     }
+  }
+
+  .icon-search {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    height: 34px;
+    width: 34px;
+    padding: .5em;
+    text-align: center;
+    background: rgba(0, 0, 0, .1);
   }
 }

@@ -13,11 +13,12 @@ class AutoCompleteField extends Component {
     };
 
     this.renderMenu = this.renderMenu.bind(this);
-    // this.filterList = this.filterList.bind(this);
-    this.handleAutoCompleteChange = this.handleAutoCompleteChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSelectOption = this.handleSelectOption.bind(this);
-    this.handleAutoCompleteBlur = this.handleAutoCompleteBlur.bind(this);
-    this.handleAutoCompleteFocus = this.handleAutoCompleteFocus.bind(this);
+    this.handleInputBlur = this.handleInputBlur.bind(this);
+    this.handleInputFocus = this.handleInputFocus.bind(this);
+    this.handleInputKeyUp = this.handleInputKeyUp.bind(this);
+    this.handleIconClick = this.handleIconClick.bind(this);
   }
 
   isOpen() {
@@ -25,18 +26,20 @@ class AutoCompleteField extends Component {
   }
 
   filterList() {
-    const { data, filter } = this.props;
-    const { value } = this.autocompleteField || {};
+    const { data, getItemValue } = this.props;
+    const { value } = this.inputField || {};
     let list = [];
 
     if (value && value.trim()) {
-      list = data.filter(d => d[filter].toLowerCase().indexOf(value.trim().toLowerCase()) > -1);
+      list = data.filter(d =>
+        getItemValue(d).toLowerCase().indexOf(value.trim().toLowerCase()) > -1,
+      );
     }
 
     return list;
   }
 
-  handleAutoCompleteChange(e) {
+  handleInputChange(e) {
     const { target } = e;
     const { value } = target;
     const { onChange } = this.props;
@@ -52,8 +55,8 @@ class AutoCompleteField extends Component {
   }
 
   handleSelectOption(data) {
-    const { onChange, filter } = this.props;
-    const value = data[filter];
+    const { onChange, getItemValue } = this.props;
+    const value = getItemValue(data);
 
     onChange(value);
 
@@ -64,7 +67,7 @@ class AutoCompleteField extends Component {
     });
   }
 
-  handleAutoCompleteFocus() {
+  handleInputFocus() {
     const list = this.filterList();
 
     this.setState({
@@ -73,13 +76,32 @@ class AutoCompleteField extends Component {
     });
   }
 
-  handleAutoCompleteBlur() {
+  handleInputBlur() {
     setTimeout(() => {
       this.setState({
         list: [],
         isOpen: false,
       });
     }, 200);
+  }
+
+  handleIconClick() {
+    this.props.iconClick();
+  }
+
+  handleInputKeyUp(e) {
+    const { keyCode } = e;
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (keyCode === 13) {
+      // Enter
+      this.Enter(e);
+    }
+  }
+
+  Enter(e) {
+    this.props.onEnter(e);
   }
 
   renderMenu() {
@@ -99,10 +121,10 @@ class AutoCompleteField extends Component {
 
   render() {
     const { isOpen, editField } = this.state;
-    const { className, id, name, placeholder } = this.props;
+    const { className, id, name, placeholder, icon, iconColor } = this.props;
 
     return (
-      <div className="autocomplete-field">
+      <div className={`autocomplete-field ${icon ? 'has-icon' : ''}`}>
         <input
           type="text"
           className={className}
@@ -110,12 +132,26 @@ class AutoCompleteField extends Component {
           name={name}
           autoComplete="off"
           placeholder={placeholder}
-          onFocus={this.handleAutoCompleteFocus}
-          onBlur={this.handleAutoCompleteBlur}
-          onChange={this.handleAutoCompleteChange}
+          onFocus={this.handleInputFocus}
+          onBlur={this.handleInputBlur}
+          onChange={this.handleInputChange}
+          onKeyUp={this.handleInputKeyUp}
           value={editField}
-          ref={(input) => { this.autocompleteField = input; }}
+          ref={(input) => { this.inputField = input; }}
         />
+        {icon &&
+          <div
+            role="button"
+            tabIndex="-1"
+            className="icon-search"
+            onClick={this.handleIconClick}
+          >
+            <i
+              className={`fa fa-${icon} ${iconColor[0] !== '#' ? iconColor : ''}`}
+              style={{ color: `${iconColor[0] === '#' ? iconColor : ''}` }}
+            />
+          </div>
+        }
         <div className={`autocomplete-list ${isOpen ? 'show' : ''}`}>
           {this.renderMenu()}
         </div>
@@ -125,34 +161,42 @@ class AutoCompleteField extends Component {
 }
 
 AutoCompleteField.defaultProps = {
-  renderItem: (item, filter) => (
+  getItemValue: () => {},
+  renderItem: item => (
     <div
       role="button"
       tabIndex="-1"
       key={item.id}
       onClick={() => this.handleSelectOption(item)}
-    >{item[filter]}</div>
+    >{this.props.getItemValue(item)}</div>
   ),
   className: '',
   id: '',
   name: '',
+  icon: '',
+  iconColor: '',
   placeholder: '',
-  filter: 'name',
   data: [],
   open: false,
   onChange: () => {},
+  iconClick: () => {},
+  onEnter: () => {},
 };
 
 AutoCompleteField.propTypes = {
   renderItem: PropTypes.func,
+  getItemValue: PropTypes.func,
   className: PropTypes.string,
   id: PropTypes.string,
   name: PropTypes.string,
+  icon: PropTypes.string,
+  iconColor: PropTypes.string,
   open: PropTypes.bool,
   placeholder: PropTypes.string,
-  filter: PropTypes.string,
   data: PropTypes.array,
   onChange: PropTypes.func,
+  iconClick: PropTypes.func,
+  onEnter: PropTypes.func,
 };
 
 export default AutoCompleteField;

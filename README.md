@@ -1,6 +1,9 @@
-# React AutoComplete Field link Dropdown
+# React Dropdown AutoComplete
 
 ## Params
+- getItemValue
+  - required
+  - get value in single item
 - renderItem
   - optional
   - custom list menu item you want to show
@@ -10,7 +13,7 @@
 - className
   - optional
 - id
-  - required
+  - optional
   - is the key for the list render
 - name
   - optional
@@ -23,14 +26,26 @@
   - your data list
   - must be array
   - default: []
-- filter
-  - optional
-  - the key you want to filter the data list
-  - if you don't have custom renderItem, then the default renderItem will use this parameter to filter list
-  - default: `name`
-- onChange:
+- value
+  - required
+  - value for auto-complete field check with old value
+- onChange
   - optional
   - get value from autocomplete field as params in func
+- onEnter
+  - optional
+  - do what ever you want after press enter key
+- icon
+  - optional
+  - icon for the input at the right side
+  - only support font-awesome
+- iconColor
+  - optional
+  - the icon color
+  - support format: HEX, RGB, RGBA
+- iconClick
+  - optional
+  - do what ever you want after click the icon
 
 ## Example
 ```jsx
@@ -40,21 +55,25 @@ class App extends React.Component {
 
     return (
       <ReactDropDownAutoComplete
+        getItemValue={item => item.prod_id}
         className="form-control"
-        id="cube"
-        name="cube"
-        placeholder="Cube Serial Number"
-        data={cube.list || []}
+        id="name"
+        name="name"
+        placeholder="Station Name"
+        data={station.list || []}
         renderItem={item => (
           <div
             role="button"
             tabIndex="-1"
-            onClick={(val) => { editFields.cube = val; }}
-          >{item.prod_id}</div>)
+            onClick={(val) => { editFields.name = val; }}
+          >{item.id} - {item.name}</div>)
         }
-        filter="prod_id"
-        value={editFields.cube}
-        onChange={(val) => { editFields.cube = val; }}
+        icon="search"
+        iconColor="#ff000"
+        iconClick={() => { /* TODO */ }}
+        value={editFields.name}
+        onChange={(val) => { editFields.name = val; }}
+        onEnter={() => { /* TODO */ }}
       />
     );
   }

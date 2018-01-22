@@ -24,8 +24,9 @@
   - must be array
   - default: []
 - filter
-  - required
-  - the key you want to filter the data list
+  - optional
+  - the key you want to filter the data list
+  - if you don't have custom renderItem, then the default renderItem will use this parameter to filter list
   - default: `name`
 - onChange:
   - optional

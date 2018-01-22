@@ -2,6 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 import './style.scss';
 
+const isCustomColor = (color) => {
+  const c = color.trim();
+
+  if (
+    c[0] === '#' ||
+    c.indexOf('rgb(') > -1 ||
+    c.indexOf('rgba(') > -1
+  ) return true;
+
+  return false;
+};
+
 class AutoCompleteField extends Component {
   constructor(props) {
     super(props);
@@ -147,8 +159,8 @@ class AutoCompleteField extends Component {
             onClick={this.handleIconClick}
           >
             <i
-              className={`fa fa-${icon} ${iconColor[0] !== '#' ? iconColor : ''}`}
-              style={{ color: `${iconColor[0] === '#' ? iconColor : ''}` }}
+              className={`fa fa-${icon} ${!isCustomColor(iconColor) ? iconColor : ''}`}
+              style={{ color: `${isCustomColor(iconColor) ? iconColor : ''}` }}
             />
           </div>
         }

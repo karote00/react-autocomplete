@@ -551,6 +551,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // eslint-disable-line
 
 
+var isCustomColor = function isCustomColor(color) {
+  var c = color.trim();
+
+  if (c[0] === '#' || c.indexOf('rgb(') > -1 || c.indexOf('rgba(') > -1) return true;
+
+  return false;
+};
+
 var AutoCompleteField = function (_Component) {
   _inherits(AutoCompleteField, _Component);
 
@@ -745,8 +753,8 @@ var AutoCompleteField = function (_Component) {
             onClick: this.handleIconClick
           },
           _react2.default.createElement('i', {
-            className: 'fa fa-' + icon + ' ' + (iconColor[0] !== '#' ? iconColor : ''),
-            style: { color: '' + (iconColor[0] === '#' ? iconColor : '') }
+            className: 'fa fa-' + icon + ' ' + (!isCustomColor(iconColor) ? iconColor : ''),
+            style: { color: '' + (isCustomColor(iconColor) ? iconColor : '') }
           })
         ),
         _react2.default.createElement(

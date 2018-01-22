@@ -45,13 +45,13 @@
     position: absolute;
     right: 0;
     top: 50%;
+    height: 32px;
+    width: 32px;
     transform: translateY(-50%);
     cursor: pointer;
-    height: 34px;
-    width: 34px;
-    padding: .5em;
+    font-size: 1.3em;
+    padding: .2em;
     text-align: center;
-    background: rgba(0, 0, 0, .1);
     outline: none;
   }
 }

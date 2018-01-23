@@ -1,5 +1,38 @@
 # React Dropdown AutoComplete
 
+## Example
+```jsx
+class App extends React.Component {
+  render() {
+    const { product } = this.props; // get data where you have, or combine from redux
+
+    return (
+      <ReactDropDownAutoComplete
+        getItemValue={item => item.prod_id}
+        className="form-control"
+        id="name"
+        name="name"
+        placeholder="Station Name"
+        data={station.list || []}
+        renderItem={item => (
+          <div
+            role="button"
+            tabIndex="-1"
+            onClick={(val) => { editFields.name = val; }}
+          >{item.id} - {item.name}</div>)
+        }
+        icon="search"
+        iconColor="#ff000"
+        iconClick={() => { /* TODO */ }}
+        value={editFields.name}
+        onChange={(val) => { editFields.name = val; }}
+        onEnter={() => { /* TODO */ }}
+      />
+    );
+  }
+}
+```
+
 ## Params
 - getItemValue
   - required
@@ -46,36 +79,3 @@
 - iconClick
   - optional
   - do what ever you want after click the icon
-
-## Example
-```jsx
-class App extends React.Component {
-  render() {
-    const { product } = this.props; // get data where you have, or combine from redux
-
-    return (
-      <ReactDropDownAutoComplete
-        getItemValue={item => item.prod_id}
-        className="form-control"
-        id="name"
-        name="name"
-        placeholder="Station Name"
-        data={station.list || []}
-        renderItem={item => (
-          <div
-            role="button"
-            tabIndex="-1"
-            onClick={(val) => { editFields.name = val; }}
-          >{item.id} - {item.name}</div>)
-        }
-        icon="search"
-        iconColor="#ff000"
-        iconClick={() => { /* TODO */ }}
-        value={editFields.name}
-        onChange={(val) => { editFields.name = val; }}
-        onEnter={() => { /* TODO */ }}
-      />
-    );
-  }
-}
-```

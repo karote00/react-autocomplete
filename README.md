@@ -4,7 +4,7 @@
 ```jsx
 class App extends React.Component {
   render() {
-    const { editfield } = this.state; // you can get your input value by other ways
+    const { editFields } = this.state; // you can get your input value by other ways
     const { product } = this.props; // get data where you have, or combine from redux
 
     return (

@@ -9,7 +9,7 @@ class App extends React.Component {
 
     return (
       <ReactDropDownAutoComplete
-        getItemValue={item => item.prod_id}
+        getItemValue={item => item.name}
         className="form-control"
         id="name"
         name="name"

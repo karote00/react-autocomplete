@@ -20,8 +20,8 @@ class App extends React.Component {
             role="button"
             tabIndex="-1"
             onClick={(val) => { editFields.name = val; }}
-          >{item.id} - {item.name}</div>)
-        }
+          >{item.id} - {item.name}</div>
+        )}
         icon="search"
         iconColor="#ff000"
         iconClick={() => { /* TODO */ }}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
-import './style.scss';
 
 const isCustomColor = (color) => {
   const c = color.trim();
@@ -14,7 +13,7 @@ const isCustomColor = (color) => {
   return false;
 };
 
-class AutoCompleteField extends Component {
+class ReactDropdownAutoComplete extends Component {
   constructor(props) {
     super(props);
 
@@ -167,12 +166,64 @@ class AutoCompleteField extends Component {
         <div className={`autocomplete-list ${isOpen ? 'show' : ''}`}>
           {this.renderMenu()}
         </div>
+        <style>{`
+          .autocomplete-field {
+            position: relative;
+          }
+          .autocomplete-field.has-icon input[type="text"] {
+            padding-right: 40px;
+          }
+          .autocomplete-field .autocomplete-list {
+            position: absolute;
+            top: 34px;
+            width: 100%;
+            background: white;
+            overflow: auto;
+            height: 0;
+            z-index: 9;
+            -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+                    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+          }
+          .autocomplete-field .autocomplete-list.show {
+            border: 1px solid #d2d6de;
+            border-top: none;
+            height: unset;
+            max-height: 214px;
+          }
+          .autocomplete-field .autocomplete-list > div {
+            padding: 6px 12px;
+            background: white;
+            border-bottom: 1px solid #d2d6de;
+            cursor: pointer;
+            outline: none;
+          }
+          .autocomplete-field .autocomplete-list > div:hover {
+            background: rgba(0, 0, 0, 0.1);
+          }
+          .autocomplete-field .autocomplete-list > div:last-child {
+            border: none;
+          }
+          .autocomplete-field .icon-search {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            height: 32px;
+            width: 32px;
+            -webkit-transform: translateY(-50%);
+                    transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.3em;
+            padding: .2em;
+            text-align: center;
+            outline: none;
+          }
+        `}</style>
       </div>
     );
   }
 }
 
-AutoCompleteField.defaultProps = {
+ReactDropdownAutoComplete.defaultProps = {
   getItemValue: () => {},
   renderItem: item => (
     <div
@@ -195,7 +246,7 @@ AutoCompleteField.defaultProps = {
   onEnter: () => {},
 };
 
-AutoCompleteField.propTypes = {
+ReactDropdownAutoComplete.propTypes = {
   renderItem: PropTypes.func,
   getItemValue: PropTypes.func,
   className: PropTypes.string,
@@ -211,4 +262,4 @@ AutoCompleteField.propTypes = {
   onEnter: PropTypes.func,
 };
 
-export default AutoCompleteField;
+export default ReactDropdownAutoComplete;

@@ -1,6 +1,9 @@
 # React Dropdown AutoComplete
 
+[![npm version](https://img.shields.io/npm/v/react-dropdown-autocomplete.svg?style=flat-square)](https://www.npmjs.com/package/react-dropdown-autocomplete)
+[![npm downloads](https://img.shields.io/npm/dm/react-dropdown-autocomplete.svg?style=flat-square)](https://www.npmjs.com/package/react-dropdown-autocomplete)
 [![GitHub issues](https://img.shields.io/github/issues/karote00/react-autocomplete.svg?style=flat-square)](https://github.com/karote00/react-autocomplete/issues)
+[![GitHub license](https://img.shields.io/github/license/karote00/react-autocomplete.svg?style=flat-square)](https://github.com/karote00/react-autocomplete/blob/master/LICENSE)
 
 ## Example
 ```jsx

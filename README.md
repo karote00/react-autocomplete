@@ -1,5 +1,7 @@
 # React Dropdown AutoComplete
 
+[![GitHub issues](https://img.shields.io/github/issues/karote00/react-autocomplete.svg?style=flat-square)](https://github.com/karote00/react-autocomplete/issues)
+
 ## Example
 ```jsx
 class App extends React.Component {

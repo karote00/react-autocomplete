@@ -39,6 +39,12 @@ class App extends React.Component {
 }
 ```
 
+## Data Seclection
+You can use these ways to select value
+- Type the whole correct value
+- Mouse click the value
+- Press `arrow up/down` to change selection and press `enter or arrow right` to select value
+
 ## Params
 - getItemValue
   - required

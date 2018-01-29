@@ -20,6 +20,7 @@ class ReactDropdownAutoComplete extends Component {
     this.state = {
       isOpen: props.open || false,
       list: [],
+      is_focus: -1,
       editField: '',
     };
 
@@ -61,11 +62,13 @@ class ReactDropdownAutoComplete extends Component {
     this.setState({
       list,
       isOpen: list.length > 0,
+      is_focus: 0,
       editField: value,
     });
   }
 
   handleSelectOption(data) {
+    const { list } = this.state;
     const { onChange, getItemValue } = this.props;
     const value = getItemValue(data);
 
@@ -74,6 +77,7 @@ class ReactDropdownAutoComplete extends Component {
     this.setState({
       editField: value,
       list: [],
+      is_focus: list.indexOf(data),
       isOpen: false,
     });
   }
@@ -83,6 +87,7 @@ class ReactDropdownAutoComplete extends Component {
 
     this.setState({
       list,
+      is_focus: 0,
       isOpen: list.length > 0,
     });
   }
@@ -101,31 +106,98 @@ class ReactDropdownAutoComplete extends Component {
   }
 
   handleInputKeyUp(e) {
+    const { is_focus, list } = this.state;
     const { keyCode } = e;
+
     e.stopPropagation();
     e.preventDefault();
 
     if (keyCode === 13) {
       // Enter
       this.Enter(e);
+    } else if (keyCode === 38) {
+      // Up
+      if (is_focus > 0) {
+        this.setState({
+          move: 'up',
+          is_focus: is_focus - 1,
+        });
+      }
+    } else if (keyCode === 39) {
+      // Right
+      this.Enter(e);
+    } else if (keyCode === 40) {
+      // Down
+      if (is_focus < list.length - 1) {
+        this.setState({
+          move: 'down',
+          is_focus: is_focus + 1,
+        });
+      }
     }
   }
 
   Enter(e) {
-    this.props.onEnter(e);
+    const { is_focus, list, editField } = this.state;
+    const { onChange, getItemValue, onEnter } = this.props;
+    const data = list[is_focus];
+
+    const value = (data && getItemValue(data)) || editField;
+
+    onChange(value);
+
+    this.setState({
+      editField: value,
+      list: [],
+      isOpen: false,
+    });
+
+    onEnter(e);
+  }
+
+  scrollListContainer() {
+    const { is_focus, move } = this.state;
+    const c = this.listContainer;
+
+    if (c) {
+      if (c.children[0]) {
+        const nh = c.offsetHeight;
+        const ch = c.children[0].offsetHeight;
+
+        if (move === 'down') {
+          const moveBottom = (is_focus + 1) * ch;
+
+          if (moveBottom > nh) {
+            c.scrollTo(0, moveBottom - nh);
+          }
+        } else if (move === 'up') {
+          const moveTop = is_focus * ch;
+
+          if (moveTop < c.scrollTop) {
+            c.scrollTo(0, moveTop);
+          }
+        }
+      }
+    }
   }
 
   renderMenu() {
     const { renderItem } = this.props;
+    const { is_focus } = this.state;
 
-    const menus = this.filterList().map((data) => {
+    const menus = this.filterList().map((data, i) => {
       const item = renderItem(data);
 
       return React.cloneElement(item, {
         key: data.id || data.name,
+        className: i === is_focus ? 'is_focus' : '',
         onClick: () => this.handleSelectOption(data),
       });
     });
+
+    setTimeout(() => {
+      this.scrollListContainer();
+    }, 10);
 
     return menus;
   }
@@ -163,7 +235,7 @@ class ReactDropdownAutoComplete extends Component {
             />
           </div>
         }
-        <div className={`autocomplete-list ${isOpen ? 'show' : ''}`}>
+        <div className={`autocomplete-list ${isOpen ? 'show' : ''}`} ref={(item) => { this.listContainer = item; }}>
           {this.renderMenu()}
         </div>
         <style>{`
@@ -202,6 +274,9 @@ class ReactDropdownAutoComplete extends Component {
           }
           .autocomplete-field .autocomplete-list > div:last-child {
             border: none;
+          }
+          .autocomplete-field .autocomplete-list > div.is_focus {
+            background: rgba(0, 0, 0, 0.2);
           }
           .autocomplete-field .icon-search {
             position: absolute;

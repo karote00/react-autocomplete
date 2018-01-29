@@ -538,6 +538,7 @@ var ReactDropdownAutoComplete = function (_Component) {
     _this.state = {
       isOpen: props.open || false,
       list: [],
+      is_focus: -1,
       editField: ''
     };
 
@@ -590,12 +591,14 @@ var ReactDropdownAutoComplete = function (_Component) {
       this.setState({
         list: list,
         isOpen: list.length > 0,
+        is_focus: 0,
         editField: value
       });
     }
   }, {
     key: 'handleSelectOption',
     value: function handleSelectOption(data) {
+      var list = this.state.list;
       var _props2 = this.props,
           onChange = _props2.onChange,
           getItemValue = _props2.getItemValue;
@@ -607,6 +610,7 @@ var ReactDropdownAutoComplete = function (_Component) {
       this.setState({
         editField: value,
         list: [],
+        is_focus: list.indexOf(data),
         isOpen: false
       });
     }
@@ -617,6 +621,7 @@ var ReactDropdownAutoComplete = function (_Component) {
 
       this.setState({
         list: list,
+        is_focus: 0,
         isOpen: list.length > 0
       });
     }
@@ -640,7 +645,11 @@ var ReactDropdownAutoComplete = function (_Component) {
   }, {
     key: 'handleInputKeyUp',
     value: function handleInputKeyUp(e) {
+      var _state = this.state,
+          is_focus = _state.is_focus,
+          list = _state.list;
       var keyCode = e.keyCode;
+
 
       e.stopPropagation();
       e.preventDefault();
@@ -648,12 +657,82 @@ var ReactDropdownAutoComplete = function (_Component) {
       if (keyCode === 13) {
         // Enter
         this.Enter(e);
+      } else if (keyCode === 38) {
+        // Up
+        if (is_focus > 0) {
+          this.setState({
+            move: 'up',
+            is_focus: is_focus - 1
+          });
+        }
+      } else if (keyCode === 39) {
+        // Right
+        this.Enter(e);
+      } else if (keyCode === 40) {
+        // Down
+        if (is_focus < list.length - 1) {
+          this.setState({
+            move: 'down',
+            is_focus: is_focus + 1
+          });
+        }
       }
     }
   }, {
     key: 'Enter',
     value: function Enter(e) {
-      this.props.onEnter(e);
+      var _state2 = this.state,
+          is_focus = _state2.is_focus,
+          list = _state2.list,
+          editField = _state2.editField;
+      var _props3 = this.props,
+          onChange = _props3.onChange,
+          getItemValue = _props3.getItemValue,
+          onEnter = _props3.onEnter;
+
+      var data = list[is_focus];
+
+      var value = data && getItemValue(data) || editField;
+
+      onChange(value);
+
+      this.setState({
+        editField: value,
+        list: [],
+        isOpen: false
+      });
+
+      onEnter(e);
+    }
+  }, {
+    key: 'scrollListContainer',
+    value: function scrollListContainer() {
+      var _state3 = this.state,
+          is_focus = _state3.is_focus,
+          move = _state3.move;
+
+      var c = this.listContainer;
+
+      if (c) {
+        if (c.children[0]) {
+          var nh = c.offsetHeight;
+          var ch = c.children[0].offsetHeight;
+
+          if (move === 'down') {
+            var moveBottom = (is_focus + 1) * ch;
+
+            if (moveBottom > nh) {
+              c.scrollTo(0, moveBottom - nh);
+            }
+          } else if (move === 'up') {
+            var moveTop = is_focus * ch;
+
+            if (moveTop < c.scrollTop) {
+              c.scrollTo(0, moveTop);
+            }
+          }
+        }
+      }
     }
   }, {
     key: 'renderMenu',
@@ -661,18 +740,24 @@ var ReactDropdownAutoComplete = function (_Component) {
       var _this3 = this;
 
       var renderItem = this.props.renderItem;
+      var is_focus = this.state.is_focus;
 
 
-      var menus = this.filterList().map(function (data) {
+      var menus = this.filterList().map(function (data, i) {
         var item = renderItem(data);
 
         return _react2.default.cloneElement(item, {
           key: data.id || data.name,
+          className: i === is_focus ? 'is_focus' : '',
           onClick: function onClick() {
             return _this3.handleSelectOption(data);
           }
         });
       });
+
+      setTimeout(function () {
+        _this3.scrollListContainer();
+      }, 10);
 
       return menus;
     }
@@ -681,16 +766,16 @@ var ReactDropdownAutoComplete = function (_Component) {
     value: function render() {
       var _this4 = this;
 
-      var _state = this.state,
-          isOpen = _state.isOpen,
-          editField = _state.editField;
-      var _props3 = this.props,
-          className = _props3.className,
-          id = _props3.id,
-          name = _props3.name,
-          placeholder = _props3.placeholder,
-          icon = _props3.icon,
-          iconColor = _props3.iconColor;
+      var _state4 = this.state,
+          isOpen = _state4.isOpen,
+          editField = _state4.editField;
+      var _props4 = this.props,
+          className = _props4.className,
+          id = _props4.id,
+          name = _props4.name,
+          placeholder = _props4.placeholder,
+          icon = _props4.icon,
+          iconColor = _props4.iconColor;
 
 
       return _react2.default.createElement(
@@ -727,13 +812,15 @@ var ReactDropdownAutoComplete = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: 'autocomplete-list ' + (isOpen ? 'show' : '') },
+          { className: 'autocomplete-list ' + (isOpen ? 'show' : ''), ref: function ref(item) {
+              _this4.listContainer = item;
+            } },
           this.renderMenu()
         ),
         _react2.default.createElement(
           'style',
           null,
-          '\n          .autocomplete-field {\n            position: relative;\n          }\n          .autocomplete-field.has-icon input[type="text"] {\n            padding-right: 40px;\n          }\n          .autocomplete-field .autocomplete-list {\n            position: absolute;\n            top: 34px;\n            width: 100%;\n            background: white;\n            overflow: auto;\n            height: 0;\n            z-index: 9;\n            -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n                    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n          }\n          .autocomplete-field .autocomplete-list.show {\n            border: 1px solid #d2d6de;\n            border-top: none;\n            height: unset;\n            max-height: 214px;\n          }\n          .autocomplete-field .autocomplete-list > div {\n            padding: 6px 12px;\n            background: white;\n            border-bottom: 1px solid #d2d6de;\n            cursor: pointer;\n            outline: none;\n          }\n          .autocomplete-field .autocomplete-list > div:hover {\n            background: rgba(0, 0, 0, 0.1);\n          }\n          .autocomplete-field .autocomplete-list > div:last-child {\n            border: none;\n          }\n          .autocomplete-field .icon-search {\n            position: absolute;\n            right: 0;\n            top: 50%;\n            height: 32px;\n            width: 32px;\n            -webkit-transform: translateY(-50%);\n                    transform: translateY(-50%);\n            cursor: pointer;\n            font-size: 1.3em;\n            padding: .2em;\n            text-align: center;\n            outline: none;\n          }\n        '
+          '\n          .autocomplete-field {\n            position: relative;\n          }\n          .autocomplete-field.has-icon input[type="text"] {\n            padding-right: 40px;\n          }\n          .autocomplete-field .autocomplete-list {\n            position: absolute;\n            top: 34px;\n            width: 100%;\n            background: white;\n            overflow: auto;\n            height: 0;\n            z-index: 9;\n            -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n                    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n          }\n          .autocomplete-field .autocomplete-list.show {\n            border: 1px solid #d2d6de;\n            border-top: none;\n            height: unset;\n            max-height: 214px;\n          }\n          .autocomplete-field .autocomplete-list > div {\n            padding: 6px 12px;\n            background: white;\n            border-bottom: 1px solid #d2d6de;\n            cursor: pointer;\n            outline: none;\n          }\n          .autocomplete-field .autocomplete-list > div:hover {\n            background: rgba(0, 0, 0, 0.1);\n          }\n          .autocomplete-field .autocomplete-list > div:last-child {\n            border: none;\n          }\n          .autocomplete-field .autocomplete-list > div.is_focus {\n            background: rgba(0, 0, 0, 0.2);\n          }\n          .autocomplete-field .icon-search {\n            position: absolute;\n            right: 0;\n            top: 50%;\n            height: 32px;\n            width: 32px;\n            -webkit-transform: translateY(-50%);\n                    transform: translateY(-50%);\n            cursor: pointer;\n            font-size: 1.3em;\n            padding: .2em;\n            text-align: center;\n            outline: none;\n          }\n        '
         )
       );
     }

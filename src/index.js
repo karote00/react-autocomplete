@@ -163,17 +163,18 @@ class ReactDropdownAutoComplete extends Component {
       if (c.children[0]) {
         const nh = c.offsetHeight;
         const ch = c.children[0].offsetHeight;
+        const st = c.scrollTop;
 
         if (move === 'down') {
           const moveBottom = (is_focus + 1) * ch;
 
-          if (moveBottom > nh) {
+          if ((moveBottom - st) > nh) {
             c.scrollTo(0, moveBottom - nh);
           }
         } else if (move === 'up') {
           const moveTop = is_focus * ch;
 
-          if (moveTop < c.scrollTop) {
+          if (moveTop < st) {
             c.scrollTo(0, moveTop);
           }
         }

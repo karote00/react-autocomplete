@@ -717,17 +717,18 @@ var ReactDropdownAutoComplete = function (_Component) {
         if (c.children[0]) {
           var nh = c.offsetHeight;
           var ch = c.children[0].offsetHeight;
+          var st = c.scrollTop;
 
           if (move === 'down') {
             var moveBottom = (is_focus + 1) * ch;
 
-            if (moveBottom > nh) {
+            if (moveBottom - st > nh) {
               c.scrollTo(0, moveBottom - nh);
             }
           } else if (move === 'up') {
             var moveTop = is_focus * ch;
 
-            if (moveTop < c.scrollTop) {
+            if (moveTop < st) {
               c.scrollTo(0, moveTop);
             }
           }

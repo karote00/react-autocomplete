@@ -553,6 +553,11 @@ var ReactDropdownAutoComplete = function (_Component) {
   }
 
   _createClass(ReactDropdownAutoComplete, [{
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      clearTimeout(this.inputBlurTimer);
+    }
+  }, {
     key: 'isOpen',
     value: function isOpen() {
       return this.state.isOpen;
@@ -630,7 +635,7 @@ var ReactDropdownAutoComplete = function (_Component) {
     value: function handleInputBlur() {
       var _this2 = this;
 
-      setTimeout(function () {
+      this.inputBlurTimer = setTimeout(function () {
         _this2.setState({
           list: [],
           isOpen: false

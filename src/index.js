@@ -33,6 +33,10 @@ class ReactDropdownAutoComplete extends Component {
     this.handleIconClick = this.handleIconClick.bind(this);
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.inputBlurTimer);
+  }
+
   isOpen() {
     return this.state.isOpen;
   }
@@ -93,7 +97,7 @@ class ReactDropdownAutoComplete extends Component {
   }
 
   handleInputBlur() {
-    setTimeout(() => {
+    this.inputBlurTimer = setTimeout(() => {
       this.setState({
         list: [],
         isOpen: false,

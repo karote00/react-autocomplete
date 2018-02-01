@@ -209,33 +209,35 @@ class ReactDropdownAutoComplete extends Component {
 
     return (
       <div className={`autocomplete-field ${icon ? 'has-icon' : ''}`}>
-        <input
-          type="text"
-          className={className}
-          id={id}
-          name={name}
-          autoComplete="off"
-          placeholder={placeholder}
-          onFocus={this.handleInputFocus}
-          onBlur={this.handleInputBlur}
-          onChange={this.handleInputChange}
-          onKeyUp={this.handleInputKeyUp}
-          value={editField}
-          ref={(input) => { this.inputField = input; }}
-        />
-        {icon &&
-          <div
-            role="button"
-            tabIndex="-1"
-            className="icon-search"
-            onClick={this.handleIconClick}
-          >
-            <i
-              className={`fa fa-${icon} ${!isCustomColor(iconColor) ? iconColor : ''}`}
-              style={{ color: `${isCustomColor(iconColor) ? iconColor : ''}` }}
-            />
-          </div>
-        }
+        <div className="input-field">
+          <input
+            type="text"
+            className={className}
+            id={id}
+            name={name}
+            autoComplete="off"
+            placeholder={placeholder}
+            onFocus={this.handleInputFocus}
+            onBlur={this.handleInputBlur}
+            onChange={this.handleInputChange}
+            onKeyUp={this.handleInputKeyUp}
+            value={editField}
+            ref={(input) => { this.inputField = input; }}
+          />
+          {icon &&
+            <div
+              role="button"
+              tabIndex="-1"
+              className="icon-search"
+              onClick={this.handleIconClick}
+            >
+              <i
+                className={`fa fa-${icon} ${!isCustomColor(iconColor) ? iconColor : ''}`}
+                style={{ color: `${isCustomColor(iconColor) ? iconColor : ''}` }}
+              />
+            </div>
+          }
+        </div>
         <div className={`autocomplete-list ${isOpen ? 'show' : ''}`} ref={(item) => { this.listContainer = item; }}>
           {this.renderMenu()}
         </div>
@@ -243,12 +245,18 @@ class ReactDropdownAutoComplete extends Component {
           .autocomplete-field {
             position: relative;
           }
+          .autocomplete-field .input-field {
+            position: relative;
+            width: 100%;
+          }
+          .autocomplete-field input[type="text"] {
+            width: 100%;
+          }
           .autocomplete-field.has-icon input[type="text"] {
             padding-right: 40px;
           }
           .autocomplete-field .autocomplete-list {
-            position: absolute;
-            top: 34px;
+            position: relative;
             width: 100%;
             background: white;
             overflow: auto;

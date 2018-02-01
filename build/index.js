@@ -782,34 +782,38 @@ var ReactDropdownAutoComplete = function (_Component) {
       return _react2.default.createElement(
         'div',
         { className: 'autocomplete-field ' + (icon ? 'has-icon' : '') },
-        _react2.default.createElement('input', {
-          type: 'text',
-          className: className,
-          id: id,
-          name: name,
-          autoComplete: 'off',
-          placeholder: placeholder,
-          onFocus: this.handleInputFocus,
-          onBlur: this.handleInputBlur,
-          onChange: this.handleInputChange,
-          onKeyUp: this.handleInputKeyUp,
-          value: editField,
-          ref: function ref(input) {
-            _this4.inputField = input;
-          }
-        }),
-        icon && _react2.default.createElement(
+        _react2.default.createElement(
           'div',
-          {
-            role: 'button',
-            tabIndex: '-1',
-            className: 'icon-search',
-            onClick: this.handleIconClick
-          },
-          _react2.default.createElement('i', {
-            className: 'fa fa-' + icon + ' ' + (!isCustomColor(iconColor) ? iconColor : ''),
-            style: { color: '' + (isCustomColor(iconColor) ? iconColor : '') }
-          })
+          { className: 'input-field' },
+          _react2.default.createElement('input', {
+            type: 'text',
+            className: className,
+            id: id,
+            name: name,
+            autoComplete: 'off',
+            placeholder: placeholder,
+            onFocus: this.handleInputFocus,
+            onBlur: this.handleInputBlur,
+            onChange: this.handleInputChange,
+            onKeyUp: this.handleInputKeyUp,
+            value: editField,
+            ref: function ref(input) {
+              _this4.inputField = input;
+            }
+          }),
+          icon && _react2.default.createElement(
+            'div',
+            {
+              role: 'button',
+              tabIndex: '-1',
+              className: 'icon-search',
+              onClick: this.handleIconClick
+            },
+            _react2.default.createElement('i', {
+              className: 'fa fa-' + icon + ' ' + (!isCustomColor(iconColor) ? iconColor : ''),
+              style: { color: '' + (isCustomColor(iconColor) ? iconColor : '') }
+            })
+          )
         ),
         _react2.default.createElement(
           'div',
@@ -821,7 +825,7 @@ var ReactDropdownAutoComplete = function (_Component) {
         _react2.default.createElement(
           'style',
           null,
-          '\n          .autocomplete-field {\n            position: relative;\n          }\n          .autocomplete-field.has-icon input[type="text"] {\n            padding-right: 40px;\n          }\n          .autocomplete-field .autocomplete-list {\n            position: absolute;\n            top: 34px;\n            width: 100%;\n            background: white;\n            overflow: auto;\n            height: 0;\n            z-index: 9;\n            -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n                    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n          }\n          .autocomplete-field .autocomplete-list.show {\n            border: 1px solid #d2d6de;\n            border-top: none;\n            height: unset;\n            max-height: 214px;\n          }\n          .autocomplete-field .autocomplete-list > div {\n            padding: 6px 12px;\n            background: white;\n            border-bottom: 1px solid #d2d6de;\n            cursor: pointer;\n            outline: none;\n          }\n          .autocomplete-field .autocomplete-list > div:hover {\n            background: rgba(0, 0, 0, 0.1);\n          }\n          .autocomplete-field .autocomplete-list > div:last-child {\n            border: none;\n          }\n          .autocomplete-field .autocomplete-list > div.is_focus {\n            background: rgba(0, 0, 0, 0.2);\n          }\n          .autocomplete-field .icon-search {\n            position: absolute;\n            right: 0;\n            top: 50%;\n            height: 32px;\n            width: 32px;\n            -webkit-transform: translateY(-50%);\n                    transform: translateY(-50%);\n            cursor: pointer;\n            font-size: 1.3em;\n            padding: .2em;\n            text-align: center;\n            outline: none;\n          }\n        '
+          '\n          .autocomplete-field {\n            position: relative;\n          }\n          .autocomplete-field .input-field {\n            position: relative;\n            width: 100%;\n          }\n          .autocomplete-field input[type="text"] {\n            width: 100%;\n          }\n          .autocomplete-field.has-icon input[type="text"] {\n            padding-right: 40px;\n          }\n          .autocomplete-field .autocomplete-list {\n            position: relative;\n            width: 100%;\n            background: white;\n            overflow: auto;\n            height: 0;\n            z-index: 9;\n            -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n                    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);\n          }\n          .autocomplete-field .autocomplete-list.show {\n            border: 1px solid #d2d6de;\n            border-top: none;\n            height: unset;\n            max-height: 214px;\n          }\n          .autocomplete-field .autocomplete-list > div {\n            padding: 6px 12px;\n            background: white;\n            border-bottom: 1px solid #d2d6de;\n            cursor: pointer;\n            outline: none;\n          }\n          .autocomplete-field .autocomplete-list > div:hover {\n            background: rgba(0, 0, 0, 0.1);\n          }\n          .autocomplete-field .autocomplete-list > div:last-child {\n            border: none;\n          }\n          .autocomplete-field .autocomplete-list > div.is_focus {\n            background: rgba(0, 0, 0, 0.2);\n          }\n          .autocomplete-field .icon-search {\n            position: absolute;\n            right: 0;\n            top: 50%;\n            height: 32px;\n            width: 32px;\n            -webkit-transform: translateY(-50%);\n                    transform: translateY(-50%);\n            cursor: pointer;\n            font-size: 1.3em;\n            padding: .2em;\n            text-align: center;\n            outline: none;\n          }\n        '
         )
       );
     }

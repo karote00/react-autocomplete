@@ -260,7 +260,8 @@ class ReactDropdownAutoComplete extends Component {
             padding-right: 40px;
           }
           .autocomplete-field .autocomplete-list {
-            position: relative;
+            position: absolute;
+            top: 2em;
             width: 100%;
             background: white;
             overflow: auto;

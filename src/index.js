@@ -21,7 +21,7 @@ class ReactDropdownAutoComplete extends Component {
       isOpen: props.open || false,
       list: [],
       is_focus: -1,
-      editField: '',
+      editField: props.value || '',
     };
 
     this.renderMenu = this.renderMenu.bind(this);
@@ -35,6 +35,12 @@ class ReactDropdownAutoComplete extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.inputBlurTimer);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      editField: nextProps.value || '',
+    });
   }
 
   isOpen() {
@@ -209,7 +215,7 @@ class ReactDropdownAutoComplete extends Component {
 
   render() {
     const { isOpen, editField } = this.state;
-    const { className, id, name, placeholder, icon, iconColor } = this.props;
+    const { className, id, name, placeholder, icon, iconColor, inputVlue } = this.props;
 
     return (
       <div className={`autocomplete-field ${icon ? 'has-icon' : ''}`}>

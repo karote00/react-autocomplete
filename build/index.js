@@ -539,7 +539,7 @@ var ReactDropdownAutoComplete = function (_Component) {
       isOpen: props.open || false,
       list: [],
       is_focus: -1,
-      editField: ''
+      editField: props.value || ''
     };
 
     _this.renderMenu = _this.renderMenu.bind(_this);
@@ -556,6 +556,13 @@ var ReactDropdownAutoComplete = function (_Component) {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       clearTimeout(this.inputBlurTimer);
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({
+        editField: nextProps.value || ''
+      });
     }
   }, {
     key: 'isOpen',
@@ -781,7 +788,8 @@ var ReactDropdownAutoComplete = function (_Component) {
           name = _props4.name,
           placeholder = _props4.placeholder,
           icon = _props4.icon,
-          iconColor = _props4.iconColor;
+          iconColor = _props4.iconColor,
+          inputVlue = _props4.inputVlue;
 
 
       return _react2.default.createElement(

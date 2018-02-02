@@ -1,6 +1,6 @@
 {
   "name": "react-dropdown-autocomplete",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "React AutoComplete Field",
   "main": "build/index.js",
   "scripts": {

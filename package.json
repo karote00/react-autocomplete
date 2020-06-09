@@ -16,6 +16,10 @@
     "React",
     "Auto Complete"
   ],
+  "files": [
+    "src",
+    "build"
+  ],
   "author": {
     "name": "Asa Tsai",
     "email": "karoteglathe@gmail.com"
@@ -24,23 +28,22 @@
   "bugs": {
     "url": "https://github.com/karote00/react-autocomplete/issues"
   },
-  "dependencies": {
-    "autoprefixer": "7.1.2",
-    "css-loader": "0.28.4",
-    "prop-types": "^15.6.0",
-    "react": "^15.5.4",
-    "style-loader": "^0.19.1",
-    "webpack": "^2.6.1"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "7.1.2",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.5.1",
+    "css-loader": "0.28.4",
     "node-sass": "^4.7.2",
-    "sass-loader": "^6.0.6"
+    "prop-types": "^15.6.0",
+    "react": "^15.5.4",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.1",
+    "webpack": "^2.6.1"
   },
   "homepage": "https://github.com/karote00/react-autocomplete#readme"
 }
